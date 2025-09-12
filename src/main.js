@@ -9,7 +9,10 @@ const coins = [
   { name: "1p", value: 1, image: "1p.png" },
 ];
 
-function getRandomCoins(count = 5) {
+// Global variable for coin count
+let coinCount = 5;
+
+function getRandomCoins(count = coinCount) {
   const selected = [];
   for (let i = 0; i < count; i++) {
     const randomIndex = Math.floor(Math.random() * coins.length);
@@ -77,7 +80,9 @@ function checkAnswer() {
         <p><strong>${isCorrect ? "Correct 😻" : "Incorrect 😿"}</strong></p>
       </header>
       <p>Total is ${totalFormatted}</p>
-      <button id="try-another-button">Try another</button>
+      <footer>
+        <button id="try-another-button">Try another</button>
+      </footer>
     </article>
   `;
   document.body.appendChild(dialog);
@@ -97,12 +102,69 @@ function checkAnswer() {
   });
 }
 
+function showSettings() {
+  // Close any existing dialog
+  document.querySelector("dialog")?.close();
+
+  const dialog = document.createElement("dialog");
+  dialog.open = true;
+  dialog.innerHTML = `
+    <article>
+      <header>
+        <button aria-label="Close" rel="prev"></button>
+        <p><strong>Settings</strong></p>
+      </header>
+      <label for="coin-count-select">
+        Number of coins
+        <select id="coin-count-select" name="coin-count">
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5" selected>5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+      </label>
+      <footer>
+        <button id="save-settings-button">Save</button>
+      </footer>
+    </article>
+  `;
+  document.body.appendChild(dialog);
+
+  // Set the current coin count in the select
+  const selectElement = dialog.querySelector("#coin-count-select");
+  selectElement.value = coinCount.toString();
+
+  // Add event to close dialog
+  dialog.querySelector("button").addEventListener("click", () => {
+    dialog.close();
+    dialog.remove();
+  });
+
+  // Add event to save settings
+  const saveButton = dialog.querySelector("#save-settings-button");
+  saveButton.addEventListener("click", () => {
+    const newCount = parseInt(selectElement.value, 10);
+    coinCount = newCount;
+    resetGame();
+    dialog.close();
+    dialog.remove();
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   resetGame();
   document
     .getElementById("check-button")
     .addEventListener("click", checkAnswer);
   document.getElementById("reset-button").addEventListener("click", resetGame);
+  document
+    .getElementById("settings-button")
+    .addEventListener("click", showSettings);
 
   // Validation to allow only integers
   document.getElementById("pounds-input").addEventListener("input", (e) => {
