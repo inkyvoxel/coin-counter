@@ -9,10 +9,40 @@ const coins = [
   { name: "1p", value: 1, image: "1p.png" },
 ];
 
-// Global variable for coin count
-let coinCount = 5;
+// Encapsulate state
+const gameState = {
+  coinCount: 5,
+  currentCoins: [],
+};
 
-function getRandomCoins(count = coinCount) {
+// Helper to create and manage dialogs
+function createDialog(content, onClose = () => {}) {
+  const dialog = document.createElement("dialog");
+  dialog.open = true;
+  dialog.innerHTML = content;
+  document.body.appendChild(dialog);
+
+  const closeButton = dialog.querySelector("button[aria-label='Close']");
+  if (closeButton) {
+    closeButton.addEventListener("click", () => {
+      dialog.close();
+      dialog.remove();
+      onClose();
+    });
+  }
+
+  return dialog;
+}
+
+// Helper for input validation
+function validateNumericInput(input, max = null) {
+  let value = input.value.replace(/[^0-9]/g, "");
+  const num = parseInt(value, 10);
+  if (max && num > max) value = max.toString();
+  input.value = value;
+}
+
+function getRandomCoins(count = gameState.coinCount) {
   const selected = [];
   for (let i = 0; i < count; i++) {
     const randomIndex = Math.floor(Math.random() * coins.length);
@@ -23,6 +53,7 @@ function getRandomCoins(count = coinCount) {
 
 function displayCoins(selectedCoins) {
   const display = document.getElementById("coins-display");
+  if (!display) return;
   const chunkSize = 5;
   const chunks = [];
   for (let i = 0; i < selectedCoins.length; i += chunkSize) {
@@ -52,28 +83,27 @@ function formatAsPounds(pence) {
 }
 
 function resetGame() {
-  window.currentCoins = getRandomCoins();
-  displayCoins(window.currentCoins);
-  document.getElementById("pounds-input").value = "";
-  document.getElementById("pence-input").value = "";
+  gameState.currentCoins = getRandomCoins();
+  displayCoins(gameState.currentCoins);
+  const poundsInput = document.getElementById("pounds-input");
+  const penceInput = document.getElementById("pence-input");
+  if (poundsInput) poundsInput.value = "";
+  if (penceInput) penceInput.value = "";
 }
 
 function checkAnswer() {
-  // Close any existing dialog
-  document.querySelector("dialog")?.close();
-
   const poundsInput = document.getElementById("pounds-input");
   const penceInput = document.getElementById("pence-input");
+  if (!poundsInput || !penceInput) return;
+
   const pounds = parseInt(poundsInput.value, 10) || 0;
   const pence = parseInt(penceInput.value, 10) || 0;
   const userTotal = pounds * 100 + pence;
-  const correctTotal = calculateTotal(window.currentCoins);
+  const correctTotal = calculateTotal(gameState.currentCoins);
   const isCorrect = userTotal === correctTotal;
   const totalFormatted = formatAsPounds(correctTotal);
 
-  const dialog = document.createElement("dialog");
-  dialog.open = true;
-  dialog.innerHTML = `
+  const content = `
     <article>
       <header>
         <button aria-label="Close" rel="prev"></button>
@@ -85,30 +115,20 @@ function checkAnswer() {
       </footer>
     </article>
   `;
-  document.body.appendChild(dialog);
 
-  // Add event to close dialog
-  dialog.querySelector("button").addEventListener("click", () => {
-    dialog.close();
-    dialog.remove();
-  });
-
-  // Add event to 'try another'
+  const dialog = createDialog(content);
   const tryAnotherButton = dialog.querySelector("#try-another-button");
-  tryAnotherButton.addEventListener("click", () => {
-    resetGame();
-    dialog.close();
-    dialog.remove();
-  });
+  if (tryAnotherButton) {
+    tryAnotherButton.addEventListener("click", () => {
+      resetGame();
+      dialog.close();
+      dialog.remove();
+    });
+  }
 }
 
 function showSettings() {
-  // Close any existing dialog
-  document.querySelector("dialog")?.close();
-
-  const dialog = document.createElement("dialog");
-  dialog.open = true;
-  dialog.innerHTML = `
+  const content = `
     <article>
       <header>
         <button aria-label="Close" rel="prev"></button>
@@ -133,54 +153,45 @@ function showSettings() {
       </footer>
     </article>
   `;
-  document.body.appendChild(dialog);
 
-  // Set the current coin count in the select
+  const dialog = createDialog(content);
   const selectElement = dialog.querySelector("#coin-count-select");
-  selectElement.value = coinCount.toString();
-
-  // Add event to close dialog
-  dialog.querySelector("button").addEventListener("click", () => {
-    dialog.close();
-    dialog.remove();
-  });
-
-  // Add event to save settings
   const saveButton = dialog.querySelector("#save-settings-button");
-  saveButton.addEventListener("click", () => {
-    const newCount = parseInt(selectElement.value, 10);
-    coinCount = newCount;
-    resetGame();
-    dialog.close();
-    dialog.remove();
-  });
+  if (selectElement) selectElement.value = gameState.coinCount.toString();
+  if (saveButton) {
+    saveButton.addEventListener("click", () => {
+      const newCount = parseInt(selectElement.value, 10);
+      gameState.coinCount = newCount;
+      resetGame();
+      dialog.close();
+      dialog.remove();
+    });
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   resetGame();
-  document
-    .getElementById("check-button")
-    .addEventListener("click", checkAnswer);
-  document.getElementById("reset-button").addEventListener("click", resetGame);
-  document
-    .getElementById("settings-button")
-    .addEventListener("click", showSettings);
+  const checkButton = document.getElementById("check-button");
+  const resetButton = document.getElementById("reset-button");
+  const settingsButton = document.getElementById("settings-button");
+  const poundsInput = document.getElementById("pounds-input");
+  const penceInput = document.getElementById("pence-input");
 
-  // Validation to allow only integers
-  document.getElementById("pounds-input").addEventListener("input", (e) => {
-    e.target.value = e.target.value.replace(/[^0-9]/g, "");
-  });
-  document.getElementById("pence-input").addEventListener("input", (e) => {
-    let value = e.target.value.replace(/[^0-9]/g, "");
-    const num = parseInt(value, 10);
-    if (num > 99) value = "99";
-    e.target.value = value;
-  });
+  if (checkButton) checkButton.addEventListener("click", checkAnswer);
+  if (resetButton) resetButton.addEventListener("click", resetGame);
+  if (settingsButton) settingsButton.addEventListener("click", showSettings);
 
-  // Add Enter key support for check answer
-  document.getElementById("pence-input").addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      checkAnswer();
-    }
-  });
+  if (poundsInput) {
+    poundsInput.addEventListener("input", (e) =>
+      validateNumericInput(e.target)
+    );
+  }
+  if (penceInput) {
+    penceInput.addEventListener("input", (e) =>
+      validateNumericInput(e.target, 99)
+    );
+    penceInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") checkAnswer();
+    });
+  }
 });

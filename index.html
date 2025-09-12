@@ -10,43 +10,47 @@
     />
   </head>
   <body>
+    <header class="container">
+      <h1>Coin Counter 🪙</h1>
+      <p>What's the total?</p>
+    </header>
     <main class="container">
-      <article>
-        <header>
-          <h1>Coin Counter 🪙</h1>
-          <p>What's the total?</p>
-        </header>
-        <section id="coins-display">
-          <!-- Coins will be displayed here -->
-        </section>
-        <section>
-          <label for="pounds-input">
-            Pounds (£)
-            <input
-              type="number"
-              id="pounds-input"
-              placeholder="0"
-              min="0"
-              step="1"
-            />
-          </label>
-          <label for="pence-input">
-            Pence (p)
-            <input
-              type="number"
-              id="pence-input"
-              placeholder="0"
-              min="0"
-              max="99"
-              step="1"
-            />
-          </label>
-          <button id="check-button">Check Answer</button>
-          <button id="reset-button" class="secondary">Reset</button>
-          <button id="settings-button" class="secondary">Settings</button>
-        </section>
-      </article>
+      <section id="coins-display">
+        <!-- Coins will be displayed here -->
+      </section>
+      <section>
+        <label for="pounds-input">
+          Pounds (£)
+          <input
+            type="number"
+            id="pounds-input"
+            placeholder="0"
+            min="0"
+            step="1"
+          />
+        </label>
+        <label for="pence-input">
+          Pence (p)
+          <input
+            type="number"
+            id="pence-input"
+            placeholder="0"
+            min="0"
+            max="99"
+            step="1"
+          />
+        </label>
+        <button id="check-button">Check Answer</button>
+        <button id="reset-button" class="secondary">Reset</button>
+        <button id="settings-button" class="secondary">Settings</button>
+      </section>
     </main>
+    <footer class="container">
+      <p>
+        Made by
+        <a href="https://www.inkyvoxel.com" target="_blank">inkyvoxel</a> ⬛
+      </p>
+    </footer>
     <script type="module" src="js/main.js"></script>
   </body>
 </html>
