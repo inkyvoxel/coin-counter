@@ -21,14 +21,14 @@ function getRandomCoins(count = 5) {
 function displayCoins(selectedCoins) {
   const display = document.getElementById("coins-display");
   display.innerHTML =
-    "<ul>" +
+    '<div class="grid">' +
     selectedCoins
       .map(
         (coin) =>
-          `<li><img src="/assets/${coin.image}" alt="${coin.name}" /> ${coin.name}</li>`
+          `<div><img src="/assets/${coin.image}" alt="${coin.name}" /> ${coin.name}</div>`
       )
       .join("") +
-    "</ul>";
+    "</div>";
 }
 
 function calculateTotal(selectedCoins) {
