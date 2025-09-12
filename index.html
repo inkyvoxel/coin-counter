@@ -11,7 +11,40 @@
     />
   </head>
   <body>
-    <main class="container"></main>
+    <main class="container">
+      <article>
+        <header>
+          <h1>What's the total?</h1>
+        </header>
+        <section id="coins-display">
+          <!-- Coins will be displayed here -->
+        </section>
+        <section>
+          <label for="pounds-input">
+            Pounds (£)
+            <input
+              type="number"
+              id="pounds-input"
+              placeholder="0"
+              min="0"
+              step="1"
+            />
+          </label>
+          <label for="pence-input">
+            Pence (p)
+            <input
+              type="number"
+              id="pence-input"
+              placeholder="0"
+              min="0"
+              max="99"
+              step="1"
+            />
+          </label>
+          <button id="check-button">Check Answer</button>
+        </section>
+      </article>
+    </main>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
