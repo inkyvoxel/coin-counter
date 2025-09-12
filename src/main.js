@@ -77,12 +77,21 @@ function checkAnswer() {
         <p><strong>${isCorrect ? "Correct! 😻" : "Incorrect 😿"}</strong></p>
       </header>
       <p>Total is ${totalFormatted}</p>
+      <button id="try-another-button">Try another</button>
     </article>
   `;
   document.body.appendChild(dialog);
 
   // Add event to close dialog
   dialog.querySelector("button").addEventListener("click", () => {
+    dialog.close();
+    dialog.remove();
+  });
+
+  // Add event to 'try another'
+  const tryAnotherButton = dialog.querySelector("#try-another-button");
+  tryAnotherButton.addEventListener("click", () => {
+    resetGame();
     dialog.close();
     dialog.remove();
   });
