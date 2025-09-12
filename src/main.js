@@ -20,15 +20,22 @@ function getRandomCoins(count = 5) {
 
 function displayCoins(selectedCoins) {
   const display = document.getElementById("coins-display");
-  display.innerHTML =
-    '<div class="grid">' +
-    selectedCoins
-      .map(
-        (coin) =>
-          `<div><img src="/assets/${coin.image}" alt="${coin.name}" /> ${coin.name}</div>`
-      )
-      .join("") +
-    "</div>";
+  const chunkSize = 5;
+  const chunks = [];
+  for (let i = 0; i < selectedCoins.length; i += chunkSize) {
+    chunks.push(selectedCoins.slice(i, i + chunkSize));
+  }
+  display.innerHTML = chunks
+    .map(
+      (chunk) =>
+        `<div class="grid">${chunk
+          .map(
+            (coin) =>
+              `<div><img src="/assets/${coin.image}" alt="${coin.name}" /> ${coin.name}</div>`
+          )
+          .join("")}</div>`
+    )
+    .join("");
 }
 
 function calculateTotal(selectedCoins) {
