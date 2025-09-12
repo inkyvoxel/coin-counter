@@ -93,9 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document
     .getElementById("check-button")
     .addEventListener("click", checkAnswer);
-  document
-    .getElementById("try-another-button")
-    .addEventListener("click", resetGame);
+  document.getElementById("reset-button").addEventListener("click", resetGame);
 
   // Validation to allow only integers
   document.getElementById("pounds-input").addEventListener("input", (e) => {
