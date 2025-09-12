@@ -1,6 +1,6 @@
 # Coin Counter
 
-A simple coin counter game for kids built with Vite, HTML, JavaScript, and CSS.
+A simple coin counting game for kids built with Vite, HTML, JavaScript, and CSS.
 
 ## Getting Started
 
@@ -10,4 +10,4 @@ A simple coin counter game for kids built with Vite, HTML, JavaScript, and CSS.
 
 ## License
 
-MIT
+[MIT](LICENSE)
