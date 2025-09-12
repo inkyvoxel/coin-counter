@@ -81,6 +81,10 @@ document.addEventListener("DOMContentLoaded", () => {
     .getElementById("check-button")
     .addEventListener("click", checkAnswer);
 
+  // Clear input values on load
+  document.getElementById("pounds-input").value = "";
+  document.getElementById("pence-input").value = "";
+
   // Validation to allow only integers
   document.getElementById("pounds-input").addEventListener("input", (e) => {
     e.target.value = e.target.value.replace(/[^0-9]/g, "");
