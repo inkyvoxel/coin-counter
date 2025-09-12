@@ -1,3 +1,2 @@
-- Use PicoCSS
-- Use Vite
 - Use vanilla JavaScript, HTML, and CSS
+- Use PicoCSS

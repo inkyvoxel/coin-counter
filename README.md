@@ -1,12 +1,16 @@
 # Coin Counter
 
-A simple coin counting game for kids built with Vite, HTML, JavaScript, and CSS.
+A simple coin counting game for kids built with HTML, JavaScript, and CSS.
+
+It's using British Pounds!
 
 ## Getting Started
 
-1. Install dependencies: `npm install`
-2. Run the development server: `npm run dev`
-3. Build for production: `npm run build`
+Serve static files with a server, e.g.
+
+```
+python3 -m http.server 8000
+```
 
 ## License
 

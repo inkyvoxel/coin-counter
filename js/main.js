@@ -34,7 +34,7 @@ function displayCoins(selectedCoins) {
         `<div class="grid">${chunk
           .map(
             (coin) =>
-              `<div><img src="/assets/${coin.image}" alt="${coin.name}" /> ${coin.name}</div>`
+              `<div><img src="img/${coin.image}" alt="${coin.name}" /> ${coin.name}</div>`
           )
           .join("")}</div>`
     )
