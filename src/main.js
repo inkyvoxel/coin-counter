@@ -48,6 +48,13 @@ function formatAsPounds(pence) {
   return `£${pounds}.${remainingPence.toString().padStart(2, "0")}`;
 }
 
+function resetGame() {
+  window.currentCoins = getRandomCoins();
+  displayCoins(window.currentCoins);
+  document.getElementById("pounds-input").value = "";
+  document.getElementById("pence-input").value = "";
+}
+
 function checkAnswer() {
   // Close any existing dialog
   document.querySelector("dialog")?.close();
@@ -82,15 +89,13 @@ function checkAnswer() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  window.currentCoins = getRandomCoins();
-  displayCoins(window.currentCoins);
+  resetGame();
   document
     .getElementById("check-button")
     .addEventListener("click", checkAnswer);
-
-  // Clear input values on load
-  document.getElementById("pounds-input").value = "";
-  document.getElementById("pence-input").value = "";
+  document
+    .getElementById("try-another-button")
+    .addEventListener("click", resetGame);
 
   // Validation to allow only integers
   document.getElementById("pounds-input").addEventListener("input", (e) => {
