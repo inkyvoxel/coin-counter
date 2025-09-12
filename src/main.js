@@ -74,7 +74,7 @@ function checkAnswer() {
     <article>
       <header>
         <button aria-label="Close" rel="prev"></button>
-        <p><strong>${isCorrect ? "Correct! 😻" : "Incorrect 😿"}</strong></p>
+        <p><strong>${isCorrect ? "Correct 😻" : "Incorrect 😿"}</strong></p>
       </header>
       <p>Total is ${totalFormatted}</p>
       <button id="try-another-button">Try another</button>
@@ -113,5 +113,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const num = parseInt(value, 10);
     if (num > 99) value = "99";
     e.target.value = value;
+  });
+
+  // Add Enter key support for check answer
+  document.getElementById("pence-input").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      checkAnswer();
+    }
   });
 });
