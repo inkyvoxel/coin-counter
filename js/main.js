@@ -185,6 +185,12 @@ document.addEventListener("DOMContentLoaded", () => {
     poundsInput.addEventListener("input", (e) =>
       validateNumericInput(e.target)
     );
+    poundsInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        penceInput?.focus();
+      }
+    });
   }
   if (penceInput) {
     penceInput.addEventListener("input", (e) =>
