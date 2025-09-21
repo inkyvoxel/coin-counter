@@ -13,6 +13,7 @@ const coins = [
 const gameState = {
   coinCount: 5,
   currentCoins: [],
+  showCoinValue: true,
 };
 
 // Helper to create and manage dialogs
@@ -65,7 +66,9 @@ function displayCoins(selectedCoins) {
         `<div class="grid">${chunk
           .map(
             (coin) =>
-              `<div><img src="img/${coin.image}" alt="${coin.name}" /> ${coin.name}</div>`
+              `<div><img src="img/${coin.image}" alt="${coin.name}" />${
+                gameState.showCoinValue ? ` ${coin.name}` : ""
+              }</div>`
           )
           .join("")}</div>`
     )
@@ -148,6 +151,10 @@ function showSettings() {
           <option value="10">10</option>
         </select>
       </label>
+      <label>
+        <input type="checkbox" id="show-coin-value-checkbox" name="show-coin-value" role="switch" />
+        Show coin value
+      </label>
       <footer>
         <button id="save-settings-button">Save</button>
       </footer>
@@ -156,12 +163,16 @@ function showSettings() {
 
   const dialog = createDialog(content);
   const selectElement = dialog.querySelector("#coin-count-select");
+  const checkboxElement = dialog.querySelector("#show-coin-value-checkbox");
   const saveButton = dialog.querySelector("#save-settings-button");
   if (selectElement) selectElement.value = gameState.coinCount.toString();
+  if (checkboxElement) checkboxElement.checked = gameState.showCoinValue;
   if (saveButton) {
     saveButton.addEventListener("click", () => {
       const newCount = parseInt(selectElement.value, 10);
+      const showValue = checkboxElement.checked;
       gameState.coinCount = newCount;
+      gameState.showCoinValue = showValue;
       resetGame();
       dialog.close();
       dialog.remove();
